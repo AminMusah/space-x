@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import MiniLoader from "./MiniLoader";
 import axios from "axios";
-import Loader from "./Loader";
+import LaunchList from "./LaunchList";
+import Pagination from "./Pagination";
 
 function Main() {
   const [loading, setLoading] = useState(false);
   const [miniloading, setMiniLoading] = useState(false);
   const [launch, setLaunch] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(8);
+  const [error, setError] = useState(false);
+  
 
   const [selectedMission, setSelectedMission] = useState("Select Mission");
   const [selectedRocket, setSelectedRocket] = useState("Select Rocket");
@@ -27,24 +32,28 @@ function Main() {
   const handleSearch = (e) => {
     e.preventDefault();
     setMiniLoading(true);
-    getLaunch(event.target.value)
+    getLaunch(e.target.value)
   };
 
+  //get All launches
   useEffect(() => {
     const getLaunches = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`https://api.spacexdata.com/v3/launches`);
+        const res = await axios.get(`/api/`);
         setLaunch(res.data);
         console.log(res.data);
         setLoading(false);
+        setError(false)
       } catch (error) {
-        setLoading(true);
+        setError(true);
+        setLoading(false);
         console.log(error);
       }
     };
     getLaunches();
   }, []);
+
 
   const getLaunch = async (e) => {
     try {
@@ -63,6 +72,10 @@ function Main() {
       console.log(error);
     }
   };
+
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentPosts = launch.slice(firstPostIndex, lastPostIndex)
 
   return (
     <div>
@@ -127,42 +140,9 @@ function Main() {
           <span className=" absolute">Search</span>
         </button>
       </form>
-      <div className="flex justify-center items-center h- h-max m-8">
-        {loading ? (
-          <Loader />
-        ) : (
-          <div className=" grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 relative">
-            {launch.map((launches) => {
-              return (
-                <div
-                  key={launches.flight_number}
-                  className="bg-light-blue p-4 flex flex-col items-center justify-center transition-all duration-200 overflow-hidden"
-                >
-                  <img
-                    src={launches.links.mission_patch || "/img/starship.jpg"}
-                    alt=""
-                    className="h-64 w-full object-cover aspect-ratio-square"
-                  />
-                  <div className="flex xm w-full mt-4">
-                    <p className="text-sm">Mission Name:</p>
-                    <span className="text-sm">{launches.mission_name}</span>
-                  </div>
-                  <div className="flex w-full mt-4">
-                    <p className="text-sm">Rocket Name:</p>
-                    <span className="text-sm">
-                      {launches.rocket.rocket_name}
-                    </span>
-                  </div>
-                  <div className="flex w-full mt-4">
-                    <p className="text-sm">Launch Year:</p>
-                    <span className="text-sm">{launches.launch_year}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      {error ? <p className="flex justify-center items-center m-40">No Launches</p> : ""}
+      <LaunchList loading={loading} launch={currentPosts}/>
+      <Pagination totalPosts={launch.length} postPerPage={postPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
     </div>
   );
 }
