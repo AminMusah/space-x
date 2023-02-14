@@ -3,6 +3,7 @@ import MiniLoader from "./MiniLoader";
 import axios from "axios";
 import LaunchList from "./LaunchList";
 import Pagination from "./Pagination";
+import Footer from "./Footer";
 
 function Main() {
   const [loading, setLoading] = useState(false);
@@ -143,6 +144,7 @@ function Main() {
       {error ? <p className="flex justify-center items-center m-40">No Launches</p> : ""}
       <LaunchList loading={loading} launch={currentPosts}/>
       <Pagination totalPosts={launch.length} postPerPage={postPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+      <Footer/>
     </div>
   );
 }
