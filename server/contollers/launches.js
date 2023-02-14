@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const getShips = async (req, res) => {
+const getLaunches = async (req, res) => {
     try {
-        axios.get('https://api.spacexdata.com/v3/ships')
+        axios.get('https://api.spacexdata.com/v3/launches')
         .then(response => {
           res.send(response.data);
         })
@@ -15,4 +15,4 @@ const getShips = async (req, res) => {
     }
 };
 
-module.exports = { getShips };
+module.exports = { getLaunches };

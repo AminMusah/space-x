@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const ships = require('./routes/ships');
+const launches = require('./routes/launches');
 
-app.use(cors())
+// app.use(cors())
 
 //send json data 
 app.use(express.json())
 
 //routes
-app.use('/api/',ships)
+app.use('/api/',launches)
 
 const PORT =  process.env.PORT || 5000
 
