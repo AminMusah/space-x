@@ -9,8 +9,8 @@ const getLaunches = async (req, res) => {
         res.send(response.data);
       })
       .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error making API request");
+        res.status(500)
+        res.send("Error making API request");
       });
   } catch (error) {
     res.status(500).send(error);
@@ -28,7 +28,8 @@ const getFlightNumber = async (req, res) => {
         res.send(response.data);
       })
       .catch((error) => {
-        res.status(500).send(error);
+        res.status(500)
+        res.send(error);
       });
   } catch (error) {
     console.log(error);
@@ -46,7 +47,8 @@ const getMission = async (req, res) => {
         res.send(response.data);
       })
       .catch((error) => {
-        res.status(500).send(error);
+        res.status(500)
+        res.send(error);
       });
   } catch (error) {
     console.log(error);
@@ -64,7 +66,8 @@ const getRocket = async (req, res) => {
         res.send(response.data);
       })
       .catch((error) => {
-        res.status(500).send(error);
+        res.status(500)
+        res.send(error);
       });
   } catch (error) {
     console.log(error);
