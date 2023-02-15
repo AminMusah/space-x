@@ -4,6 +4,7 @@ import axios from "axios";
 import LaunchList from "./LaunchList";
 import Pagination from "./Pagination";
 import Footer from "./Footer";
+import Popup from "./PopUp";
 
 function Main() {
   const [loading, setLoading] = useState(false);
@@ -12,12 +13,13 @@ function Main() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(8);
   const [error, setError] = useState(false);
-  const [flightNumber, setFlightNumber] = useState('Select flight'); // State to hold flight number input
-  const [missionId, setMissionId] = useState('Select Mission'); // State to hold Mission Id input
-  const [rocketId, setRocketId] = useState('Select Rocket'); // State to hold Rocket Id input
+  const [flightNumber, setFlightNumber] = useState('1'); // State to hold flight number input
+  const [missionId, setMissionId] = useState('EE86F74'); // State to hold Mission Id input
+  const [rocketId, setRocketId] = useState('Falcon 1'); // State to hold Rocket Id input
   const [launchInfo, setLaunchInfo] = useState(null); // State to hold launch info
   const [missionInfo, setMissionInfo] = useState(null); // State to hold Mission info
   const [rocketInfo, setRocketInfo] = useState(null); // State to hold Rocket info
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleMissionChange = (e) => {
     setMissionId(e.target.value);
@@ -31,11 +33,20 @@ function Main() {
     setFlightNumber(e.target.value);
   };
 
-  // const handleSearch = (e) => {
-  //   e.preventDefault();
-  //   setMiniLoading(true);
-  //   setFlightNumber(flightNumber);
-  // };
+  const handlePopupOpen = () => {
+    setShowPopup(true);
+    setMiniLoading(false);
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setMiniLoading(true);
+    handlePopupOpen();
+  };
 
   //get All launches
   useEffect(() => {
@@ -140,7 +151,6 @@ function Main() {
       ) : (
         <form
           className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 relative mx-auto w-10/12"
-          // onSubmit={handleSearch}
         >
           <div className="flex flex-col items-start mt-4">
             <label className="mt-4">Mission</label>
@@ -156,13 +166,13 @@ function Main() {
                 </option>
               ))}
             </select>
-            {missionInfo && (
+            {/* {missionInfo && (
               <div>
                 <h1>{missionInfo.mission_name}</h1>
                 <p>{missionInfo.manufacturers}</p>
                 <p>{missionInfo.description}</p>
               </div>
-            )}
+            )} */}
           </div>
           <div className="flex flex-col items-start mt-4">
             <label className="mt-4">Rocket</label>
@@ -171,7 +181,7 @@ function Main() {
               onChange={handleRocketChange}
               className="flex flex-col items-start text-black w-full px-2 h-8 overflow-hidden"
             >
-              <option value={missionId}>{missionId}</option>
+              <option value={rocketId}>{rocketId}</option>
               {launch.map((launch) => (
                 <option
                   key={launch.rocket.rocket_id}
@@ -181,13 +191,13 @@ function Main() {
                 </option>
               ))}
             </select>
-            {rocketInfo && (
+            {/* {rocketInfo && (
               <div>
                 <h1>{rocketInfo.rocket_name}</h1>
                 <p>{rocketInfo.company}</p>
                 <p>{rocketInfo.description}</p>
               </div>
-            )}
+            )} */}
           </div>
           <div className="flex flex-col items-start mt-4">
             <label className="mt-4">Flight Number</label>
@@ -203,16 +213,10 @@ function Main() {
                 </option>
               ))}
             </select>
-            {launchInfo && (
-              <div>
-                <h1>{launchInfo.mission_name}</h1>
-                <p>{launchInfo.details}</p>
-                <p>{launchInfo.rocket.rocket_name}</p>
-              </div>
-            )}
+            
           </div>
 
-          <button className="relative sm:mt-[50px] mt-[45px] bottom-0 border-white border font-inherit cursor-pointer flex items-center justify-center w-full h-10 py-2 px-12 font-medium text-lg uppercase rounded-lg transition-all">
+          <button onClick={handleSearch} className="relative sm:mt-[50px] mt-[45px] bottom-0 border-white border font-inherit cursor-pointer flex items-center justify-center w-full h-10 py-2 px-12 font-medium text-lg uppercase rounded-lg transition-all">
             {miniloading ? <MiniLoader /> : ""}
             <span className=" absolute">Search</span>
           </button>
@@ -223,6 +227,7 @@ function Main() {
       ) : (
         ""
       )}
+      <Popup launchInfo={launchInfo} missionInfo={missionInfo} rocketInfo={rocketInfo} showPopup={showPopup} handlePopupClose={handlePopupClose}/>
       <LaunchList loading={loading} launch={currentPosts} />
       <Pagination
         totalPosts={launch.length}
