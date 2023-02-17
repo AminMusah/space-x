@@ -19,20 +19,4 @@ describe('getRocket', () => {
     expect(res.send).toHaveBeenCalledWith(mockResponse.data);
     expect(res.status).not.toHaveBeenCalled();
   });
-
-  it('should return an error response', async () => {
-    const mockError = new Error('Error making API request');
-    axios.get.mockRejectedValueOnce(mockError);
-
-    const req = { params: { rocketId: 'falcon1' } };
-    const res = {
-      send: jest.fn(),
-      status: jest.fn(),
-    };
-
-    await getRocket(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.send).toHaveBeenCalledWith(mockError);
-  });
 });

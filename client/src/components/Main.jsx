@@ -3,7 +3,6 @@ import MiniLoader from "./MiniLoader";
 import axios from "axios";
 import LaunchList from "./LaunchList";
 import Pagination from "./Pagination";
-import Footer from "./Footer";
 import Popup from "./PopUp";
 
 function Main() {
@@ -15,7 +14,7 @@ function Main() {
   const [error, setError] = useState(false);
   const [flightNumber, setFlightNumber] = useState('1'); // State to hold flight number input
   const [missionId, setMissionId] = useState('EE86F74'); // State to hold Mission Id input
-  const [rocketId, setRocketId] = useState('Falcon 1'); // State to hold Rocket Id input
+  const [rocketId, setRocketId] = useState('falcon1'); // State to hold Rocket Id input
   const [launchInfo, setLaunchInfo] = useState(null); // State to hold launch info
   const [missionInfo, setMissionInfo] = useState(null); // State to hold Mission info
   const [rocketInfo, setRocketInfo] = useState(null); // State to hold Rocket info
@@ -55,7 +54,6 @@ function Main() {
         setLoading(true);
         const res = await axios.get(`/api/`);
         setLaunch(res.data);
-        console.log(res.data);
         setLoading(false);
         setError(false);
       } catch (error) {
@@ -128,11 +126,9 @@ function Main() {
             })
             .catch((error) => {
               setMiniLoading(false);
-              console.log(error);
             });
         }
       } catch (error) {
-        console.log(error)
         setMiniLoading(false);
       }
     };
@@ -157,58 +153,44 @@ function Main() {
             <select
               value={missionId}
               onChange={handleMissionChange}
-              className="flex flex-col items-start text-black w-full px-2 h-8 overflow-hidden"
+              className="flex flex-col items-start text-black w-full p-[5px] h-8 overflow-hidden rounded-lg transition-all"
             >
               <option value={missionId}>{missionId}</option>
               {launch.map((launch) => (
-                <option key={launch.mission_id} value={launch.mission_id}>
+                <option key={launch.mission_name} value={launch.mission_id}>
                   {launch.mission_id}
                 </option>
               ))}
             </select>
-            {/* {missionInfo && (
-              <div>
-                <h1>{missionInfo.mission_name}</h1>
-                <p>{missionInfo.manufacturers}</p>
-                <p>{missionInfo.description}</p>
-              </div>
-            )} */}
           </div>
           <div className="flex flex-col items-start mt-4">
             <label className="mt-4">Rocket</label>
             <select
               value={rocketId}
               onChange={handleRocketChange}
-              className="flex flex-col items-start text-black w-full px-2 h-8 overflow-hidden"
+              className="flex flex-col items-start text-black w-full p-[5px] h-8 overflow-hidden rounded-lg transition-all"
             >
               <option value={rocketId}>{rocketId}</option>
               {launch.map((launch) => (
                 <option
-                  key={launch.rocket.rocket_id}
+                key={launch.mission_name}
                   value={launch.rocket.rocket_id}
                 >
                   {launch.rocket.rocket_id}
                 </option>
               ))}
             </select>
-            {/* {rocketInfo && (
-              <div>
-                <h1>{rocketInfo.rocket_name}</h1>
-                <p>{rocketInfo.company}</p>
-                <p>{rocketInfo.description}</p>
-              </div>
-            )} */}
           </div>
           <div className="flex flex-col items-start mt-4">
             <label className="mt-4">Flight Number</label>
             <select
               value={flightNumber}
               onChange={handleFlightNumberChange}
-              className="flex flex-col items-start text-black w-full px-2 h-8 overflow-hidden"
+              className="flex flex-col items-start text-black w-full p-[5px] h-8 overflow-hidden rounded-lg transition-all "
             >
               <option value={flightNumber}>{flightNumber}</option>
               {launch.map((launch) => (
-                <option key={launch.flight_number} value={launch.flight_number}>
+                <option key={launch.mission_name} value={launch.flight_number}>
                   {launch.flight_number}
                 </option>
               ))}
@@ -216,7 +198,7 @@ function Main() {
             
           </div>
 
-          <button onClick={handleSearch} className="relative sm:mt-[50px] mt-[45px] bottom-0 border-white border font-inherit cursor-pointer flex items-center justify-center w-full h-10 py-2 px-12 font-medium text-lg uppercase rounded-lg transition-all">
+          <button onClick={handleSearch} className="relative sm:mt-[55px] mt-[45px] bottom-0 border-white border font-inherit cursor-pointer flex items-center justify-center w-full h-8 py-2 px-12 font-medium text-lg uppercase rounded-lg transition-all hover:bg-white hover:text-black">
             {miniloading ? <MiniLoader /> : ""}
             <span className=" absolute">Search</span>
           </button>
@@ -234,8 +216,8 @@ function Main() {
         postPerPage={postPerPage}
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}
+        data-testid='pagination'
       />
-      <Footer />
     </div>
   );
 }

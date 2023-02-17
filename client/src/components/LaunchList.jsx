@@ -1,13 +1,17 @@
-import React from 'react'
+import React from "react";
 import Loader from "./Loader";
 
-
-function LaunchList({loading,launch}) {
+function LaunchList({ loading, launch }) {
   return (
     <div className="flex justify-center items-center h- h-max m-8">
-        {loading ? (
-          <Loader />
-        ) : (
+      {loading ? (
+        <Loader />
+      ) : (
+        <div>
+          <h1 className="m-8 text-5xl flex items-center justify-center">
+            Launches
+          </h1>
+
           <div className=" grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 relative">
             {launch.map((launches) => {
               return (
@@ -38,9 +42,10 @@ function LaunchList({loading,launch}) {
               );
             })}
           </div>
-        )}
-      </div>
-  )
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default LaunchList
+export default LaunchList;

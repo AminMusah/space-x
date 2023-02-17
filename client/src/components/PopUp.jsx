@@ -8,7 +8,7 @@ function Popup({
   return (
     <div className="flex justify-center">
       {showPopup && (
-        <div className="absolute top-[150vh] inset-0 z-10 flex items-center justify-center shadow-lg">
+        <div className="absolute top-[160vh] inset-0 z-10 flex items-center justify-center shadow-lg">
           <div className="bg-white text-xs w-4/5 sm:w-1/2 p-2 rounded-lg relative">
             <div className="bg-white p-8 rounded-lg">
                 <div>
