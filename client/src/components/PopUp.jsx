@@ -14,7 +14,7 @@ function Popup({
                 <div>
                   <h1 className="text-3xl text-black font-bold mb-4">
                     Mission: {launchInfo.mission_name}
-                  </h1>{" "}
+                  </h1>
                   <p className="text-xs text-black mb-4 font-bold">
                     Launch Details: {launchInfo.details}
                   </p>
