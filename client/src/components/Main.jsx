@@ -4,6 +4,7 @@ import axios from "axios";
 import LaunchList from "./LaunchList";
 import Pagination from "./Pagination";
 import Popup from "./PopUp";
+import production from "../../production/base";
 
 function Main() {
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,7 @@ function Main() {
     const getLaunches = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/api/`);
+        const res = await axios.get(`${production}/api/`);
         setLaunch(res.data);
         setLoading(false);
         setError(false);
@@ -71,7 +72,7 @@ function Main() {
       try {
         if (flightNumber !== "") {
           axios
-            .get(`/api/flight/${flightNumber}`)
+            .get(`${production}/api/flight/${flightNumber}`)
             .then((response) => {
               setLaunchInfo(response.data);
               setMiniLoading(false);
@@ -95,7 +96,7 @@ function Main() {
       try {
         if (missionId !== "") {
           axios
-            .get(`/api/mission/${missionId}`)
+            .get(`${production}/api/mission/${missionId}`)
             .then((response) => {
               setMissionInfo(response.data);
               setMiniLoading(false);
@@ -119,7 +120,7 @@ function Main() {
       try {
         if (rocketId !== "") {
           axios
-            .get(`/api/rocket/${rocketId}`)
+            .get(`${production}/api/rocket/${rocketId}`)
             .then((response) => {
               setRocketInfo(response.data);
               setMiniLoading(false);
